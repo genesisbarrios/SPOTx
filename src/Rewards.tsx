@@ -120,7 +120,7 @@ const initTorus = async() => {
           </Row>
           <div style={{ height: '60%', width: '100%' }}>
             <GoogleMapReact
-            bootstrapURLKeys={{ key: process.env.GOOGLE_MAPS_API_KEY }}
+            bootstrapURLKeys={{ key: process.env.GOOGLE_MAPS_API_KEY! }}
             defaultCenter={currposition}
             defaultZoom={13}
             >
