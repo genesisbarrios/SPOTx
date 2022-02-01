@@ -1,0 +1,54 @@
+{
+  "name": "spotx",
+  "version": "0.1.0",
+  "private": true,
+  "engines": {
+    "node": ">=16.0.0"
+  },
+  "dependencies": {
+    "@project-serum/anchor": "^0.20.1",
+    "@solana/spl-token": "^0.1.8",
+    "@toruslabs/solana-embed": "^0.1.0",
+    "@vitejs/plugin-react-refresh": "^1.3.6",
+    "@web3-react/core": "^6.1.9",
+    "ethers": "^5.5.2",
+    "geolocation": "^0.2.0",
+    "google-map-react": "^2.1.10",
+    "react": "^17.0.2",
+    "react-bootstrap": "^2.1.1",
+    "react-dom": "^17.0.2",
+    "react-geolocated": "^3.2.0",
+    "react-router-dom": "^6.2.1",
+    "react-scripts": "^4.0.0",
+    "web3": "^1.7.0"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject"
+  },
+  "eslintConfig": {
+    "extends": [
+      "react-app",
+      "react-app/jest"
+    ]
+  },
+  "browserslist": [
+    ">0.2%",
+    "not dead",
+    "not op_mini all"
+  ],
+  "description": "1. Run `npm install` at the root of your directory 2. Run `npm start` to start the project",
+  "main": "vite.config.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/genesisbarrios/SPOTx.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/genesisbarrios/SPOTx/issues"
+  },
+  "homepage": ""
+}
