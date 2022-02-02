@@ -52,5 +52,8 @@
   "bugs": {
     "url": "https://github.com/genesisbarrios/SPOTx/issues"
   },
-  "homepage": ""
+  "homepage": "",
+  "devDependencies": {
+    "hardhat": "^2.8.3"
+  }
 }
