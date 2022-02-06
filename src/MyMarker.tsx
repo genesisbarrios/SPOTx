@@ -54,8 +54,8 @@ const MyMarker = ({ key, lat, lng, text, tooltip, account, library }) => {
     console.log(contract);
     let nftTxn = await contract.mint(account, 1);
     await nftTxn.wait();
-    console.log(nftTxn.hash)
     console.log(nftTxn)
+    alert("minted nft:" + nftTxn.hash);
   }
 
    const onMarkerClick = async() => {
