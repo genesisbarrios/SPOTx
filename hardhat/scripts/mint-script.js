@@ -4,8 +4,8 @@
 const hre = require("hardhat");
 
 const WALLET_ADDRESS = "0x15c622239FF4f25928fcB5a0ab47727bd3999Aa0"
-const CONTRACT_ADDRESS = "0x72eF9A1c9B3b6f862b24AD2C1317bdD790e44d71"
-//0x75ef276a26f1999530f2f7240c334a49ccd8ce5b199d32eb3caaf12b80206b39
+const CONTRACT_ADDRESS = "0xFb6a3e8a859E79654f8f6FaFb5843001D7e820fF"
+
 async function main() {
     const NFT = await hre.ethers.getContractFactory("StarbucksSPOTx");
 

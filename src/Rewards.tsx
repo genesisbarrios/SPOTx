@@ -1,22 +1,35 @@
 import { useEffect, useState, useLayoutEffect } from "react";
 import { Row, Col, Container, Button } from "react-bootstrap";
-import Torus from "@toruslabs/solana-embed";
-import Web3 from "web3";
 import image1 from "./Recently Visited.png";
-import * as solanaWeb3 from "@solana/web3.js";
-//import QrReader from 'react-qr-scanner';
+
+import { ethers } from "ethers";
+
+import { Web3ReactProvider, useWeb3React } from "@web3-react/core";
+import { InjectedConnector } from "@web3-react/injected-connector";
+import { Web3Provider } from "@ethersproject/providers";
 
 import GoogleMapReact from 'google-map-react';
 import MyMarker from "./MyMarker";
 import geolocation from 'geolocation'
 
+const injected = new InjectedConnector({
+  supportedChainIds: [80001]
+});
+
 const Rewards = () => {
-  const starbucksUserCount = 0, versaillesUserCount = 0;
-  const [account, setAccount] = useState({});
+  const web3 = useWeb3React();
+
+  // Use the connectWallet hook thirdweb gives us.
+  const { account, library } = useWeb3React();
+  console.log("👋 account:", account)
+
   var isClaiming = false;
 
-  var currposition = [25.765079, -80.263860]
+  const node_url = 'https://polygon-rpc.com';
+  const provider = new ethers.providers.JsonRpcProvider(node_url);
+  var signer;
 
+  var currposition = [25.765079, -80.263860]
   const points = [
   { id: 1, title: "Starbucks Coffee", lat: 25.773270, lng: -80.263860 },
   { id: 2, title: "Versailles Restaurant", lat: 25.765079, lng: -80.252327 }
@@ -34,52 +47,37 @@ const Rewards = () => {
       console.log(currposition)
     })
   }
-var torus;
-var userAddr;
 
-const initTorus = async() => {
-      console.log('init torus')
-      torus = new Torus({});
-      await torus.init({ buildEnv: "testing", showTorusButton: true });
-      const publicKeys = await torus.login();
-      // return array of public key in base 58
-      userAddr = publicKeys[0];
-      setAccount(userAddr);
-      getUserInfo();
-}
-
-  const onClickLogin = async() => {
-      await initTorus();
-  };
-
-  const getUserInfo = async() => {
-     const userInfo = await torus.getUserInfo();
-     
-     console.log(userInfo);
-     console.log(account);
+const handleConnect = () => {
+  try {
+    web3.activate(injected, undefined, true);
+  } catch (error) {
+    console.error(error);
   }
-
-  // useLayoutEffect(() => {
-  //     //initTorus();
-  // });
+};
 
   useEffect(() => {
-    if(!torus){
-      //initTorus();
+    if(!account){
+      handleConnect();
+    }else{
+      if(!signer){
+        signer = library.getSigner(account);
+        console.log(signer)
+      }
     }
     setPos();
   });
 
     // This is the case where the user hasn't connected their wallet
     // to your web app. Let them call connectWallet.
-    if (Object.keys(account).length === 0) {
+    if (!account) {
       return (
         <Container>
           <Row style={rowStyle}>
             <Col sm={2}></Col>
             <Col sm={8}>
               <h1 className="centerText rewardsTitle">Find your next meal now and start working towards a free one.</h1>
-              <Button onClick={onClickLogin} className="centerDiv walletButton">Connect Your Wallet</Button>
+              <Button onClick={handleConnect} className="centerDiv walletButton">Connect Your Wallet</Button>
             </Col>
             <Col sm={2}></Col>
           </Row>
@@ -87,27 +85,7 @@ const initTorus = async() => {
       );
     }
 
-  // const handleError = (err) => {
-  //   console.error(err)
-  // }
-
-  //  const handleScan = (data) => {
-  //   this.setState({
-  //     result: data,
-  //   })
-  // }
-
-    // This is the case where we have the user's address
-    // which means they've connected their wallet to our site!
-    // <Row id="qrContainer">
-    //     <QrReader
-    //       delay={2}
-    //       style={{ height: '60%', width: '100%' }}
-    //       onError={handleError}
-    //       onScan={handleScan}
-    //       />
-    //     </Row>
-    if(Object.keys(account).length !== 0){
+    if(account){
       return (
         <Container>
           
@@ -120,13 +98,13 @@ const initTorus = async() => {
           </Row>
           <div style={{ height: '60%', width: '100%' }}>
             <GoogleMapReact
-            bootstrapURLKeys={{ key: process.env.GOOGLE_MAPS_API_KEY! }}
+            bootstrapURLKeys={{ key: process.env.REACT_APP_GOOGLE_MAPS_API_KEY! }}
             defaultCenter={currposition}
             defaultZoom={13}
             >
               {points.map(({ lat, lng, id, title }) => {
               return (
-                <MyMarker key={id} lat={lat} lng={lng} text={id} tooltip={title} addr={account}/>
+                <MyMarker key={id} lat={lat} lng={lng} text={id} tooltip={title} account={account} library={library}/>
               );
             })}
             </GoogleMapReact>
